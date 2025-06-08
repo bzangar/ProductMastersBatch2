@@ -1,9 +1,13 @@
 package Module_7;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-class Post {
+class Post implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+
     private int ID;
     private String author;
     private String content;

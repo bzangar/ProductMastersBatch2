@@ -1,5 +1,6 @@
 package Module_7;
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ public class Twitter {
         System.out.println("7. Выход");
         System.out.println("8. Написать комментарии");
         System.out.println("9. Удалить пост");
+        System.out.println("10. Сохранить посты в файл");
         System.out.println();
 
         while(0 < 1) {
@@ -52,6 +54,8 @@ public class Twitter {
                 writeComment(user1);
             } else if (action == 9) {
                 deletePost();
+            } else if (action == 10) {
+                savePostsToFile(User.allPosts, "posts.data");
             } else {
                 System.out.println("Вы ввели не правильный номер!");
             }
@@ -212,5 +216,24 @@ public class Twitter {
         User.allPosts.remove(result);
 
         System.out.println("Пост удален! ");
+    }
+
+    public static void savePostsToFile(List<Post> posts, String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(posts);
+            System.out.println("Посты успешно сохранены в файл: " + filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Post> loadPostsFromFile(String filename) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            return (List<Post>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new ArrayList<>(); // возвращаем пустой список в случае ошибки
+        }
     }
 }
